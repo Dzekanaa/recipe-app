@@ -3,3 +3,7 @@
 @plugin "daisyui" {
   themes: caramellatte --default;
 }
+
+@theme {
+  --font-sans: 'Inter', system-ui, sans-serif;
+}
