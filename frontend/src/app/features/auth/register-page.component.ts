@@ -8,7 +8,7 @@ import { AuthShellComponent } from './auth-shell.component';
   selector: 'app-register-page',
   imports: [ReactiveFormsModule, RouterLink, AuthShellComponent],
   template: `
-    <app-auth-shell>
+    <app-auth-shell wave="register">
       <form
         [formGroup]="form"
         (ngSubmit)="submit()"
