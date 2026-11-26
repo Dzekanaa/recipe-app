@@ -14,9 +14,12 @@ const WAVES: Record<AuthWave, { viewBox: string; d: string }> = {
 };
 
 /**
- * Full-screen shell for the auth pages: cream panel on the left (the form is projected into it),
- * photo background on the right and the wave edge between them.
- * Use `wave="register"` for the register page; the login page uses the default wave.
+ * Full-screen shell for the auth pages: cream panel (the form is projected into it),
+ * photo background and the wave edge between them.
+ *
+ * - `wave`: shape of the edge ("login" by default, "register" for the register page).
+ * - `flip`: mirrored layout - photo on the left, panel on the right and the wave rotated by 180°.
+ * - `background`: photo shown next to the panel (file from the `public` folder).
  */
 @Component({
   selector: 'app-auth-shell',
@@ -24,7 +27,8 @@ const WAVES: Record<AuthWave, { viewBox: string; d: string }> = {
   template: `
     <main
       class="relative flex min-h-screen w-full overflow-hidden bg-base-300 bg-cover bg-center"
-      style="background-image: url('login-bg.jpg')"
+      [class.flex-row-reverse]="flip()"
+      [style.background-image]="backgroundImage()"
     >
       <section
         class="relative z-10 flex w-full items-center justify-center bg-[#FFF7ED] px-6 py-10 md:w-[clamp(22rem,28vw,30rem)] md:shrink-0"
@@ -35,7 +39,12 @@ const WAVES: Record<AuthWave, { viewBox: string; d: string }> = {
           [attr.viewBox]="shape().viewBox"
           preserveAspectRatio="none"
           aria-hidden="true"
-          class="pointer-events-none absolute -top-px left-full -ml-px hidden h-[calc(100%+2px)] w-[calc(clamp(8rem,15vw,14rem)+1px)] md:block"
+          class="pointer-events-none absolute -top-px hidden h-[calc(100%+2px)] w-[calc(clamp(8rem,15vw,14rem)+1px)] md:block"
+          [class.left-full]="!flip()"
+          [class.-ml-px]="!flip()"
+          [class.right-full]="flip()"
+          [class.-mr-px]="flip()"
+          [class.rotate-180]="flip()"
         >
           <path [attr.d]="shape().d" fill="#FFF7ED" />
         </svg>
@@ -45,5 +54,9 @@ const WAVES: Record<AuthWave, { viewBox: string; d: string }> = {
 })
 export class AuthShellComponent {
   readonly wave = input<AuthWave>('login');
+  readonly flip = input(false);
+  readonly background = input('login-bg.jpg');
+
   protected readonly shape = computed(() => WAVES[this.wave()]);
+  protected readonly backgroundImage = computed(() => `url('${this.background()}')`);
 }
