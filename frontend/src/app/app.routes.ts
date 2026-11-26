@@ -14,10 +14,6 @@ export const routes: Routes = [
         loadChildren: () => import('./features/home/home.routes').then((m) => m.HOME_ROUTES),
       },
       {
-        path: 'auth',
-        loadChildren: () => import('./features/auth/auth.routes').then((m) => m.AUTH_ROUTES),
-      },
-      {
         path: 'recipes',
         loadChildren: () =>
           import('./features/recipes/recipes.routes').then((m) => m.RECIPES_ROUTES),
@@ -52,6 +48,11 @@ export const routes: Routes = [
         loadChildren: () => import('./features/admin/admin.routes').then((m) => m.ADMIN_ROUTES),
       },
     ],
+  },
+  // auth pages are full-screen (no navbar/footer), so they live outside AppLayoutComponent
+  {
+    path: 'auth',
+    loadChildren: () => import('./features/auth/auth.routes').then((m) => m.AUTH_ROUTES),
   },
   { path: '**', redirectTo: 'home' },
 ];
